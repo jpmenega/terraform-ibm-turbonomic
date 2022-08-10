@@ -3,6 +3,12 @@ resource "ibm_is_instance" "turbonomic" {
   image   = "r006-47125f1b-b95d-47f5-8e4c-1395254549ce"
   profile = "bx2-16x64"
   metadata_service_enabled  = false
+  
+  boot_volume {
+    size = "210"
+  }
+  
+  disks = [{name = "turbonomic_data", size = "10"}]
 
   primary_network_interface {
     subnet = "0717-c412c8f1-b5e2-404e-bdd1-7bcf80c78714"
