@@ -9,6 +9,14 @@ resource "ibm_is_subnet" "sn-dal01" {
   ipv4_cidr_block = "10.240.0.0/24"
 }
 
+resource "ibm_is_image" "turbonomic-t8c-8-4-6" {
+  name = "turbonomic-t8c-8-4-6"
+}
+
+resource "ibm_is_ssh_key" "joei" {
+  name = "joei"
+}
+
 resource "ibm_is_instance" "turbonomic" {
   name    = "turbonomic-instance"
   image   = ibm_is_image.turbonomic-t8c-8-4-6.id
