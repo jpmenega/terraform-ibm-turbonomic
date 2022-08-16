@@ -1,5 +1,6 @@
 resource "ibm_is_vpc" "turbonomic-vpc" {
   name = "dal-"+var.client_name+"-vpc"
+  resource_group = "GFT ARM"
 }
 
 resource "ibm_is_subnet" "turbonomic-subnet" {
