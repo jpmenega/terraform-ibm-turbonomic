@@ -26,7 +26,7 @@ resource "ibm_is_instance" "turbonomic" {
 }
 
 resource "ibm_is_instance_volume_attachment" "turbonomic_data" {
-  instance = ibm_is_instance.example.id
+  instance = ibm_is_instance.turbonomic.id
 
   name                               = "turbonomic_data"
   profile                            = "general-purpose"
