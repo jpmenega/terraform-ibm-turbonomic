@@ -8,8 +8,6 @@ resource "ibm_is_instance" "turbonomic" {
     size = "210"
   }
   
-  disks = [{name = "turbonomic_data", size = "10"}]
-
   primary_network_interface {
     subnet = "0717-c412c8f1-b5e2-404e-bdd1-7bcf80c78714"
     allow_ip_spoofing = true
@@ -18,6 +16,24 @@ resource "ibm_is_instance" "turbonomic" {
   vpc  = "r006-f764225e-b6f7-42f6-8e4f-2f062eb459fd"
   zone = "us-south-1"
   keys = ["r006-1d3b8fca-3eda-4a63-9f3f-7a4dad8057dd"]
+
+  //User can configure timeouts
+  timeouts {
+    create = "15m"
+    update = "15m"
+    delete = "15m"
+  }
+}
+
+resource "ibm_is_instance_volume_attachment" "turbonomic_data" {
+  instance = ibm_is_instance.example.id
+
+  name                               = "turbonomic_data"
+  profile                            = "general-purpose"
+  capacity                           = "20"
+  delete_volume_on_attachment_delete = true
+  delete_volume_on_instance_delete   = true
+  volume_name                        = "turbonomic_data"
 
   //User can configure timeouts
   timeouts {
