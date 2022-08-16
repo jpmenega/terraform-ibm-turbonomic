@@ -1,6 +1,6 @@
 resource "ibm_is_vpc" "turbonomic-vpc" {
   name = "dal-${var.client_name}-vpc"
-  resource_group = "GFT ARM"
+  resource_group = "7091499c38984a33a077f69c422dfd1a"
 }
 
 resource "ibm_is_subnet" "turbonomic-subnet" {
@@ -29,7 +29,7 @@ resource "ibm_is_instance" "turbonomic" {
   vpc  = ibm_is_vpc.turbonomic-vpc.id
   zone = "us-south-1"
   keys = ["r006-1d3b8fca-3eda-4a63-9f3f-7a4dad8057dd"]
-  resource_group = "GFT ARM"
+  resource_group = "7091499c38984a33a077f69c422dfd1a"
 
   //User can configure timeouts
   timeouts {
