@@ -1,5 +1,5 @@
 resource "ibm_is_vpc" "turbonomic-vpc" {
-  name = "dal-$(var.client_name}-vpc"
+  name = "dal-${var.client_name}-vpc"
   resource_group = "GFT ARM"
 }
 
@@ -11,7 +11,7 @@ resource "ibm_is_subnet" "turbonomic-subnet" {
 }
 
 resource "ibm_is_instance" "turbonomic" {
-  name    = "$(var.client_name}-turbonomic-instance"
+  name    = "${var.client_name}-turbonomic-instance"
   image   = var.turbonomic_image_id
   profile = "bx2-16x64"
   metadata_service_enabled  = false
