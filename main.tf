@@ -25,15 +25,15 @@ resource "ibm_is_instance" "turbonomic" {
   }
 }
 
-resource "ibm_is_instance_volume_attachment" "turbonomic_data" {
+resource "ibm_is_instance_volume_attachment" "turbonomic-data" {
   instance = ibm_is_instance.turbonomic.id
 
-  name                               = "turbonomic_data"
+  name                               = "turbonomic-data"
   profile                            = "general-purpose"
   capacity                           = "20"
   delete_volume_on_attachment_delete = true
   delete_volume_on_instance_delete   = true
-  volume_name                        = "turbonomic_data"
+  volume_name                        = "turbonomic-data"
 
   //User can configure timeouts
   timeouts {
