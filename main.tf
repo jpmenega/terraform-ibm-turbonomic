@@ -1,6 +1,17 @@
+resource "ibm_is_vpc" "turbonomic-vpc" {
+  name = "dal-"+var.client_name+"-vpc"
+}
+
+resource "ibm_is_subnet" "turbonomic-subnet" {
+  name            = "turbonomic-subnet"
+  vpc             = ibm_is_vpc.turbonomic-vpd.id
+  zone            = "us-south-1"
+  ipv4_cidr_block = "10.240.0.0/24"
+}
+
 resource "ibm_is_instance" "turbonomic" {
-  name    = "turbonomic-instance"
-  image   = "r006-47125f1b-b95d-47f5-8e4c-1395254549ce"
+  name    = var.client_name+"turbonomic-instance"
+  image   = var.turbonomic_image_id
   profile = "bx2-16x64"
   metadata_service_enabled  = false
   
@@ -9,13 +20,15 @@ resource "ibm_is_instance" "turbonomic" {
   }
   
   primary_network_interface {
-    subnet = "0717-c412c8f1-b5e2-404e-bdd1-7bcf80c78714"
+    name = "eth0"
+    subnet = ibm_is_subnet.turbonomic-subnet.id
     allow_ip_spoofing = true
   }
 
-  vpc  = "r006-f764225e-b6f7-42f6-8e4f-2f062eb459fd"
+  vpc  = ibm_is_vpc.turbonomic-vpc.id
   zone = "us-south-1"
   keys = ["r006-1d3b8fca-3eda-4a63-9f3f-7a4dad8057dd"]
+  resource_group = "GFT ARM"
 
   //User can configure timeouts
   timeouts {
@@ -23,6 +36,11 @@ resource "ibm_is_instance" "turbonomic" {
     update = "15m"
     delete = "15m"
   }
+}
+
+resource "ibm_is_floating_ip" "turbonomic-floating-ip" {
+  name   = "turbonomic-floating-ip"
+  target = ibm_is_instance.turbonomic.primary_network_interface[0].id
 }
 
 resource "ibm_is_instance_volume_attachment" "turbonomic-data" {
