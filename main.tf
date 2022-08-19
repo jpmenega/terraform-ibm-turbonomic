@@ -1,6 +1,9 @@
 resource "ibm_is_vpc" "turbonomic-vpc" {
   name = "dal-${var.client_name}-vpc"
   resource_group = "7091499c38984a33a077f69c422dfd1a"
+  default_network_acl_name = "dal-${var.client_name}-vpc-default-acl"
+  default_security_group_name = "dal-${var.client_name}-vpc-default-sg"
+  default_routing_table_name = "dal-${var.client_name}-route"
 }
 
 resource "ibm_is_subnet" "turbonomic-subnet" {
@@ -8,6 +11,7 @@ resource "ibm_is_subnet" "turbonomic-subnet" {
   vpc             = ibm_is_vpc.turbonomic-vpc.id
   zone            = "us-south-1"
   ipv4_cidr_block = "10.240.0.0/24"
+  resource_group = "7091499c38984a33a077f69c422dfd1a"
 }
 
 resource "ibm_is_instance" "turbonomic" {
@@ -23,6 +27,7 @@ resource "ibm_is_instance" "turbonomic" {
   primary_network_interface {
     name = "eth0"
     subnet = ibm_is_subnet.turbonomic-subnet.id
+	primary_ipv4_address = "10.240.0.6"
     allow_ip_spoofing = true
   }
 
